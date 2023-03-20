@@ -6,6 +6,7 @@ import Message from '../components/Message'
 import CheckoutSteps from '../components/CheckoutSteps'
 import { createOrder } from '../actions/orderActions'
 import { ORDER_CREATE_RESET } from '../constants/orderConstants'
+import Khalti from '../khalti/Khalti'
 
 function PlaceOrderScreen({ history }) {
 
@@ -17,10 +18,9 @@ function PlaceOrderScreen({ history }) {
     const cart = useSelector(state => state.cart)
 
     cart.itemsPrice = cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0).toFixed(2)
-    cart.shippingPrice = (cart.itemsPrice > 100 ? 0 : 10).toFixed(2)
-    cart.taxPrice = Number((0.082) * cart.itemsPrice).toFixed(2)
 
-    cart.totalPrice = (Number(cart.itemsPrice) + Number(cart.shippingPrice) + Number(cart.taxPrice)).toFixed(2)
+
+    cart.totalPrice = (Number(cart.itemsPrice) ).toFixed(2)
 
 
     if (!cart.paymentMethod) {
@@ -59,8 +59,7 @@ function PlaceOrderScreen({ history }) {
                                 <strong>Shipping: </strong>
                                 {cart.shippingAddress.address},  {cart.shippingAddress.city}
                                 {'  '}
-                                {cart.shippingAddress.postalCode},
-                                {'  '}
+                                
                                 {cart.shippingAddress.country}
                             </p>
                         </ListGroup.Item>
@@ -114,28 +113,18 @@ function PlaceOrderScreen({ history }) {
                             <ListGroup.Item>
                                 <Row>
                                     <Col>Items:</Col>
-                                    <Col>${cart.itemsPrice}</Col>
+                                    <Col>Rs{cart.itemsPrice}</Col>
                                 </Row>
                             </ListGroup.Item>
 
-                            <ListGroup.Item>
-                                <Row>
-                                    <Col>Shipping:</Col>
-                                    <Col>${cart.shippingPrice}</Col>
-                                </Row>
-                            </ListGroup.Item>
+                            
 
-                            <ListGroup.Item>
-                                <Row>
-                                    <Col>Tax:</Col>
-                                    <Col>${cart.taxPrice}</Col>
-                                </Row>
-                            </ListGroup.Item>
+                            
 
                             <ListGroup.Item>
                                 <Row>
                                     <Col>Total:</Col>
-                                    <Col>${cart.totalPrice}</Col>
+                                    <Col>Rs{cart.totalPrice}</Col>
                                 </Row>
                             </ListGroup.Item>
 
@@ -145,14 +134,7 @@ function PlaceOrderScreen({ history }) {
                             </ListGroup.Item>
 
                             <ListGroup.Item>
-                                <Button
-                                    type='button'
-                                    className='btn-block'
-                                    disabled={cart.cartItems === 0}
-                                    onClick={placeOrder}
-                                >
-                                    Place Order
-                                </Button>
+                                <Khalti/>
                             </ListGroup.Item>
 
                         </ListGroup>

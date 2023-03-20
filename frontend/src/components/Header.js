@@ -21,7 +21,7 @@ function Header() {
             <Navbar bg="primary" variant="dark" expand="lg" collapseOnSelect>
                 <Container>
                     <LinkContainer to='/'>
-                        <Navbar.Brand>BikieMart</Navbar.Brand>
+                        <Navbar.Brand>lsdjfl</Navbar.Brand>
                     </LinkContainer>
 
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />

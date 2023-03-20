@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-
+import { PayPalButton } from 'react-paypal-button-v2'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { getOrderDetails, payOrder, deliverOrder } from '../actions/orderActions'
@@ -162,20 +162,7 @@ function OrderScreen({ match, history }) {
                                         </Row>
                                     </ListGroup.Item>
 
-                                    <ListGroup.Item>
-                                        <Row>
-                                            <Col>Shipping:</Col>
-                                            <Col>${order.shippingPrice}</Col>
-                                        </Row>
-                                    </ListGroup.Item>
-
-                                    <ListGroup.Item>
-                                        <Row>
-                                            <Col>Tax:</Col>
-                                            <Col>${order.taxPrice}</Col>
-                                        </Row>
-                                    </ListGroup.Item>
-
+                                    
                                     <ListGroup.Item>
                                         <Row>
                                             <Col>Total:</Col>
@@ -191,7 +178,7 @@ function OrderScreen({ match, history }) {
                                             {!sdkReady ? (
                                                 <Loader />
                                             ) : (
-                                                    <Button
+                                                    <PayPalButton
                                                         amount={order.totalPrice}
                                                         onSuccess={successPaymentHandler}
                                                     />
