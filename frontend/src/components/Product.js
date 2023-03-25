@@ -3,9 +3,6 @@ import { Card } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
 function Product({ product ,category}) {
-    // console.log('here is product')
-    // console.log(category)
-    // console.log(product);
     return (
         <Card className="my-3 p-3 rounded card-product">
             <Link to={`/product/${product._id}`}>
