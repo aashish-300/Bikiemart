@@ -35,7 +35,8 @@ export const productListReducer = (state = { products: [] }, action) => {
                 loading: false,
                 products: action.payload.products,
                 page: action.payload.page,
-                pages: action.payload.pages
+                pages: action.payload.pages,
+                clicked:false
             }
 
         case PRODUCT_LIST_FAIL:
@@ -46,6 +47,28 @@ export const productListReducer = (state = { products: [] }, action) => {
     }
 }
 
+export const productCategoryReducer = (state = { products: [] }, action) => {
+    console.log(action)
+    switch (action.type) {
+        case 'PRODUCT_CATEGORY_REQUEST':
+            return { loading: true,clicked:false, products: [] }
+
+        case 'PRODUCT_CATEGORY_SUCCESS':
+            return {
+                loading: false,
+                products: action.payload.products,
+                page: action.payload.page,
+                pages: action.payload.pages,
+                clicked: true,
+            }
+
+        case 'PRODUCT_CATEGORY_FAIL':
+            return { loading: false, error: action.payload }
+
+        default:
+            return state
+    }
+}
 
 
 export const productDetailsReducer = (state = { product: { reviews: [] } }, action) => {

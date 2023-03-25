@@ -35,6 +35,15 @@ export const listProducts = (keyword = '') => async (dispatch) => {
         dispatch({ type: PRODUCT_LIST_REQUEST })
 
         const { data } = await axios.get(`/api/products${keyword}`)
+        console.log('value of data');
+        console.log(data);
+        // let info = {
+        //     products:[]
+        // }
+        //  info.products = data.products.filter(e => {
+        //     return e.category === 'coconut';
+        // })
+        // console.log(info);
 
         dispatch({
             type: PRODUCT_LIST_SUCCESS,
@@ -42,8 +51,47 @@ export const listProducts = (keyword = '') => async (dispatch) => {
         })
 
     } catch (error) {
+        console.log('here is error')
+        console.log(error);
         dispatch({
             type: PRODUCT_LIST_FAIL,
+            payload: error.response && error.response.data.detail
+                ? error.response.data.detail
+                : error.message,
+        })
+    }
+}
+
+export const listProductsCategory = (category) => async (dispatch) => {
+    try {
+        dispatch({ type: 'PRODUCT_CATEGORY_REQUEST' })
+
+        const { data } = await axios.get(`/api/products`)
+        console.log('value of data inside category');
+        console.log(data);
+        let info = {
+            page:1,
+            pages:1,
+            products:[]
+        }
+        console.log('inside category');
+        console.log(category);
+         info.products = data.products.filter(e => {
+            return e.category === category;
+        })
+        console.log(info);
+
+
+        dispatch({
+            type: 'PRODUCT_CATEGORY_SUCCESS',
+            payload: info
+        })
+
+    } catch (error) {
+        console.log('here is error')
+        console.log(error);
+        dispatch({
+            type: 'PRODUCT_CATEGORY_FAIL',
             payload: error.response && error.response.data.detail
                 ? error.response.data.detail
                 : error.message,
