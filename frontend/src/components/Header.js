@@ -23,13 +23,13 @@ function Header() {
   const logoutHandler = () => {
     dispatch(logout());
   };
-  // let keyword = history.location.search;
-  const loadPage = () => {
-    dispatch(listProducts());
-  }
 
   const filterCategory = () => {
     dispatch(listProductsCategory(nothing));
+  };
+
+  const homeScreen = () => {
+    dispatch({type:'PRODUCT_CATEGORY_CLICKED'});
   };
 
   return (
@@ -37,13 +37,7 @@ function Header() {
       <Navbar bg='primary' variant='dark' expand='lg' collapseOnSelect>
         <Container>
           <LinkContainer to='/'>
-            <Navbar.Brand
-              onClick={() => {
-                loadPage()
-              }}
-            >
-              Ecommerce
-            </Navbar.Brand>
+            <Navbar.Brand onClick={homeScreen}>Ecommerce</Navbar.Brand>
           </LinkContainer>
           <Dropdown>
             <Dropdown.Toggle variant='' id='dropdown-basic'>

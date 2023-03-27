@@ -26,6 +26,7 @@ import {
 
 
 export const productListReducer = (state = { products: [] }, action) => {
+    console.log('list reducer')
     switch (action.type) {
         case PRODUCT_LIST_REQUEST:
             return { loading: true, products: [] }
@@ -48,6 +49,7 @@ export const productListReducer = (state = { products: [] }, action) => {
 }
 
 export const productCategoryReducer = (state = { products: [] }, action) => {
+    console.log('category reducer')
     console.log(action)
     switch (action.type) {
         case 'PRODUCT_CATEGORY_REQUEST':
@@ -63,8 +65,9 @@ export const productCategoryReducer = (state = { products: [] }, action) => {
             }
 
         case 'PRODUCT_CATEGORY_FAIL':
-            return { loading: false, error: action.payload }
-
+            return { loading: false, error: action.payload ,clicked: false}
+        case 'PRODUCT_CATEGORY_CLICKED':
+            return {clicked: false}
         default:
             return state
     }
@@ -72,6 +75,7 @@ export const productCategoryReducer = (state = { products: [] }, action) => {
 
 
 export const productDetailsReducer = (state = { product: { reviews: [] } }, action) => {
+    console.log('details reducer')
     switch (action.type) {
         case PRODUCT_DETAILS_REQUEST:
             return { loading: true, ...state }
@@ -89,6 +93,7 @@ export const productDetailsReducer = (state = { product: { reviews: [] } }, acti
 
 
 export const productDeleteReducer = (state = {}, action) => {
+    console.log('delete reducer')
     switch (action.type) {
         case PRODUCT_DELETE_REQUEST:
             return { loading: true }
@@ -107,6 +112,8 @@ export const productDeleteReducer = (state = {}, action) => {
 
 
 export const productCreateReducer = (state = {}, action) => {
+    console.log('product create reducer  1');
+    console.log(action);
     switch (action.type) {
         case PRODUCT_CREATE_REQUEST:
             return { loading: true }
@@ -127,6 +134,7 @@ export const productCreateReducer = (state = {}, action) => {
 
 
 export const productUpdateReducer = (state = { product: {} }, action) => {
+    console.log('update reducer')
     switch (action.type) {
         case PRODUCT_UPDATE_REQUEST:
             return { loading: true }
@@ -138,6 +146,8 @@ export const productUpdateReducer = (state = { product: {} }, action) => {
             return { loading: false, error: action.payload }
 
         case PRODUCT_UPDATE_RESET:
+            console.log('inside product update')
+            console.log(state.product)
             return { product: {} }
 
         default:

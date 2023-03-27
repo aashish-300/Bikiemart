@@ -15,6 +15,8 @@ import { PRODUCT_CREATE_RESET } from "../constants/productConstants";
 function ProductListScreen({ history, match }) {
   const dispatch = useDispatch();
 
+  const [createButton,setCreateButton] = useState(false);
+
   const productList = useSelector((state) => state.productList);
   const { loading, error, products, pages, page } = productList;
 
@@ -32,10 +34,10 @@ function ProductListScreen({ history, match }) {
     success: successCreate,
     product: createdProduct,
   } = productCreate;
-
+  
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
-
+  
   let keyword = history.location.search;
   useEffect(() => {
     dispatch({ type: PRODUCT_CREATE_RESET });
@@ -43,10 +45,14 @@ function ProductListScreen({ history, match }) {
     if (!userInfo.isAdmin) {
       history.push("/login");
     }
-
-    if (successCreate) {
-      history.push(`/admin/product/${createdProduct._id}/edit`);
-    } else {
+    // if (successCreate) {
+    //   console.log(successCreate);
+    //   history.push(`/admin/product/${createdProduct._id}/edit`);
+    // }
+    if(createButton){
+      history.push('/admin/product/create');
+    }
+     else {
       dispatch(listProducts(keyword));
     }
   }, [
@@ -56,6 +62,7 @@ function ProductListScreen({ history, match }) {
     successDelete,
     successCreate,
     createdProduct,
+    createButton,
     keyword,
   ]);
 
@@ -66,7 +73,8 @@ function ProductListScreen({ history, match }) {
   };
 
   const createProductHandler = () => {
-    dispatch(createProduct());
+    // dispatch(createProduct());
+    setCreateButton(true);
   };
 
   return (

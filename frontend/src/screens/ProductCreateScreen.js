@@ -14,10 +14,8 @@ import {
 } from "../actions/productActions";
 import { PRODUCT_UPDATE_RESET } from "../constants/productConstants";
 
-function ProductEditScreen({ match, history }) {
-  const productId = match.params.id;
-  console.log("details of history");
-  console.log(history);
+function ProductCreateScreen({ history }) {
+  //   const productId = match.params.id;
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
   const [image, setImage] = useState("");
@@ -29,56 +27,72 @@ function ProductEditScreen({ match, history }) {
   const dispatch = useDispatch();
   const productDetails = useSelector((state) => state.productDetails);
   const { error, loading, product } = productDetails;
-
+  const productCreate = useSelector((state) => state.productCreate);
+  const [imageUpload, setImageUpload] = useState(false);
   const productUpdate = useSelector((state) => state.productUpdate);
   const {
     error: errorUpdate,
     loading: loadingUpdate,
     success: successUpdate,
   } = productUpdate;
-
-  // dispatch(deleteProduct(productId));
-  history.listen((location, action) => {
-    console.log("route changed");
-    console.log(location);
-    // if (location.pathname !== "/admin/productlist") {
-    //    dispatch(deleteProduct(productId));
-    //   // setCount(count+1);
-    //   console.log(count);
-
-    //   console.log("not changed");
-    // }
-  });
+  const {
+    loading: loadingCreate,
+    error: errorCreate,
+    success: successCreate,
+    product: createdProduct,
+  } = productCreate;
+  const [file,setFile] = useState(null);
+  let formData;
+  console.log("formdata outsite");
   useEffect(() => {
     console.log("useeffect clicked");
 
-    if (successUpdate) {
-      dispatch({ type: PRODUCT_UPDATE_RESET });
-      history.push("/admin/productlist");
-      console.log("update successful");
-    } else {
-      if (!product.name || product._id !== Number(productId)) {
-        dispatch(listProductDetails(productId));
-        console.log("not product name");
-      } else {
-        setName(product.name);
-        setPrice(product.price);
-        setImage(product.image);
-        setBrand(product.brand);
-        setCategory(product.category);
-        setCountInStock(product.countInStock);
-        setDescription(product.description);
-        console.log("details");
-      }
+    // if (imageUpload) {
+    //   uploadFileHandler();
+    // }
+    if (createdProduct) {
+      console.log(createdProduct._id);
+      // formData.append("product_id", productId);
+      console.log("create success");
+      //   uploadFileHandler();
+      postImage(createdProduct._id);
+      setTimeout(() => {
+        history.push("/admin/productlist");
+        console.log("created successful");
+      }, 3000);
+      //   dispatch({ type: PRODUCT_UPDATE_RESET });
     }
-  }, [dispatch, product, productId, history, successUpdate]);
+    //   if (!product.name || product._id !== Number(productId)) {
+    //     dispatch(listProductDetails(productId));
+    //     console.log("not product name");
+    //   } else {
+    // setName(product.name);
+    // setPrice(product.price);
+    // setImage(product.image);
+    // setBrand(product.brand);
+    // setCategory(product.category);
+    // setCountInStock(product.countInStock);
+    // setDescription(product.description);
+    // console.log("details");
+    //   }
+    // }
+  }, [
+    dispatch,
+    product,
+    history,
+    successUpdate,
+    successCreate,
+    errorUpdate,
+    imageUpload,
+    createdProduct,
+  ]);
 
   const submitHandler = (e) => {
     e.preventDefault();
-    // dispatch(createProduct());
+    console.log("image name");
+    console.log(image);
     dispatch(
-      updateProduct({
-        _id: productId,
+      createProduct({
         name,
         price,
         image,
@@ -88,16 +102,29 @@ function ProductEditScreen({ match, history }) {
         description,
       })
     );
+
+    // dispatch(
+    //   updateProduct({
+    //     _id: productId,
+    //     name,
+    //     price,
+    //     image,
+    //     brand,
+    //     category,
+    //     countInStock,
+    //     description,
+    //   })
+    // );
   };
 
-  const uploadFileHandler = async (e) => {
-    const file = e.target.files[0];
+  const postImage = async (productId) => {
     const formData = new FormData();
-
+    console.log("here is file of image");
+    console.log(file);
     formData.append("image", file);
     formData.append("product_id", productId);
-
     setUploading(true);
+    formData.append("product_id", productId);
 
     try {
       const config = {
@@ -111,15 +138,58 @@ function ProductEditScreen({ match, history }) {
         formData,
         config
       );
-      console.log('here is upload')
-      console.log(data);
-      console.log(formData)
+      console.log("formdata outsite");
 
-      setImage(data);
+      console.log("inside post upload");
+      console.log(productId);
+      console.log(data);
+      console.log(formData);
+
+      //   setImage(file.name);
       setUploading(false);
     } catch (error) {
+      console.log(error);
+      console.log("image upload error");
       setUploading(false);
     }
+  };
+  const uploadFileHandler = async (e) => {
+    //    formData = new FormData();
+
+    console.log("file handler");
+    // console.log(productId);
+    setFile(e.target.files[0]);
+    // console.log(file);
+    // setImage(file.name);
+    // var formData = new FormData();
+
+    // formData.append("image", file);
+    console.log(file);
+    // formData.append("product_id", productId);
+
+    // setUploading(true);
+
+    // try {
+    //   const config = {
+    //     headers: {
+    //       "Content-Type": "multipart/form-data",
+    //     },
+    //   };
+
+    //   const { data } = await axios.post(
+    //     "/api/products/upload/",
+    //     formData,
+    //     config
+    //   );
+    //   console.log(data);
+    //   console.log(formData);
+
+    //   setImage(data);
+    //   setUploading(false);
+    // } catch (error) {
+    //   console.log("image upload error");
+    //   setUploading(false);
+    // }
   };
 
   return (
@@ -127,7 +197,7 @@ function ProductEditScreen({ match, history }) {
       <Link to='/admin/productlist'>Go Back</Link>
 
       <FormContainer>
-        <h1>Edit Product</h1>
+        <h1>Create Product</h1>
         {loadingUpdate && <Loader />}
         {errorUpdate && <Message variant='danger'>{errorUpdate}</Message>}
 
@@ -223,7 +293,7 @@ function ProductEditScreen({ match, history }) {
             </Form.Group>
 
             <Button type='submit' variant='primary'>
-              Update
+              Create
             </Button>
           </Form>
         )}
@@ -232,4 +302,4 @@ function ProductEditScreen({ match, history }) {
   );
 }
 
-export default ProductEditScreen;
+export default ProductCreateScreen;

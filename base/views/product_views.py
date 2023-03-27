@@ -51,6 +51,7 @@ def getProduct(request, pk):
 @permission_classes([IsAdminUser])
 def createProduct(request):
     user = request.user
+    data = request.data
 
     product = Product.objects.create(
         user=user,
@@ -61,6 +62,14 @@ def createProduct(request):
         category='',
         description=''
     )
+    
+    product.name = data['name']
+    product.price = data['price']
+    product.brand = data['brand']
+    product.countInStock = data['countInStock']
+    product.category = data['category']
+    product.description = data['description']
+    product.save();
 
     serializer = ProductSerializer(product, many=False)
     return Response(serializer.data)
@@ -100,8 +109,7 @@ def uploadImage(request):
 
     product_id = data['product_id']
     product = Product.objects.get(_id=product_id)
-
     product.image = request.FILES.get('image')
     product.save()
-
     return Response('Image was uploaded')
+

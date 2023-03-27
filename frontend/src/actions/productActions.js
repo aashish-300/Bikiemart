@@ -147,11 +147,14 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
 
 
 
-export const createProduct = () => async (dispatch, getState) => {
+export const createProduct = (product) => async (dispatch, getState) => {
+    console.log('here is details')
+    console.log(product);
     try {
         dispatch({
             type: PRODUCT_CREATE_REQUEST
         })
+        console.log('2')
 
         const {
             userLogin: { userInfo },
@@ -166,13 +169,17 @@ export const createProduct = () => async (dispatch, getState) => {
 
         const { data } = await axios.post(
             `/api/products/create/`,
-            {},
+            product,
             config
         )
+        console.log('inside create');
+        console.log(data);
         dispatch({
             type: PRODUCT_CREATE_SUCCESS,
             payload: data,
         })
+        console.log('4');
+
 
 
     } catch (error) {
@@ -212,7 +219,10 @@ export const updateProduct = (product) => async (dispatch, getState) => {
             product,
             config
         )
-
+        console.log('here is data')
+        console.log(data)
+        console.log('here is product')
+        console.log(product);
         if (data.price < 0 || data.countInStock < 0) {
             throw new Error("Price or count in stock cannot be negative");
         }

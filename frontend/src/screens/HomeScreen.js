@@ -6,7 +6,6 @@ import Loader from "../components/Loader";
 import Message from "../components/Message";
 import Paginate from "../components/Paginate";
 import { AiOutlineDown } from "react-icons/ai";
-
 import { listProducts } from "../actions/productActions";
 
 function HomeScreen({ history }) {
